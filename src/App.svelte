@@ -505,7 +505,7 @@
 	</div>
       {/each}
       <div class='button-bar'>
-	<div class='label'>Count</div>
+	<div class='label'>Ball count</div>
 	{#each [1,2,3,4,5,6,7] as value}
 	  <Ball value={value}
 		active={false}>
@@ -514,7 +514,20 @@
 	{/each}
       </div>
       <div class='button-bar'>
-	<div class='label'>Fix</div>
+	<div class='label'>Undo</div>
+	<Ball value={0}
+	      active={game.can_undo}
+	      action={() => game.undo()}>
+	  &#x21b6;
+	</Ball>
+	<Ball value={0}
+	      active={game.can_redo}
+	      action={() => game.redo()}>
+	  &#x21b7;
+	</Ball>
+	<div class='label'></div>
+	<div class='label'></div>
+	<div class='label'>Adjust ball count</div>
 	<Ball value={0}
 	      active={game.state.can_minus_balls()}
 	      action={() => game.minus_balls()}>
@@ -524,14 +537,6 @@
 	      active={game.state.can_plus_balls()}
 	      action={() => game.plus_balls()}>
 	  +
-	</Ball>
-	<div class='label'></div>
-	<div class='label'></div>
-	<div class='label'></div>
-	<div class='label'>&#x26F6;</div>
-	<Ball value={0}
-	      active={true}
-	      action={() => ui_toggle_fullscreen()}>
 	</Ball>
       </div>
     </div>
