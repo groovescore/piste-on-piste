@@ -6,6 +6,7 @@
   import * as timeutil from './lib/time-util.ts';
   import Ball from './lib/Ball.svelte';
   import Break from './lib/Break.svelte';
+  import Dialog from './lib/Dialog.svelte';
   import { Game } from './lib/Game.svelte';
   import { Options } from './lib/Options.svelte.ts';
   import { SaveGame } from './lib/SaveGame.svelte';
@@ -74,16 +75,12 @@
     ui_page = UiPage.PLAY;
   }
 
-  function ui_previous_page(): void {
-    ui_page--;
-    if (ui_page < UiPage.PLAY)
-      ui_page = UiPage.EDIT;
+  function ui_goto_play_page(): void {
+    ui_page = UiPage.PLAY;
   }
 
-  function ui_next_page(): void {
-    ui_page++;
-    if (ui_page > UiPage.EDIT)
-      ui_page = UiPage.PLAY;
+  function ui_goto_edit_page(): void {
+    ui_page = UiPage.EDIT;
   }
 
   // ui actions, each need to handle undo
@@ -167,8 +164,43 @@
 
     console.log(`key "${event.key}"`);
 
+    // Any keypress in a dialog closes the dialog and gets ignored otherwise
+    if (ui_close_dialogs())
+      return;
+
     if (ui_page == UiPage.START)
       return;
+
+    if (ui_page == UiPage.EDIT) {
+      switch (event.key) {
+	// keys specific to edit page
+      case 'Escape':
+	ui_goto_play_page();
+	return;
+	// keys accepted in both play and edit
+      case 'z':
+      case 'y':
+      case '-':
+      case '+':
+	break;
+	// the rest are ignored
+      default:
+	return;
+      }
+    }
+
+    // FIXME: convert stats to a dialog
+    if (ui_page == UiPage.MORE) {
+      switch (event.key) {
+	// keys specific to stats page
+      case 'Escape':
+	ui_goto_play_page();
+	return;
+	// the rest are ignored
+      default:
+	return;
+      }
+    }
 
     switch (event.key) {
     case '1':
@@ -219,13 +251,39 @@
       if (game.state.can_new_frame())
 	game.new_frame();
       break;
-    case 'ArrowLeft':
-      ui_previous_page();
+    case 'm':
+      ui_show_menu();
       break;
-    case 'ArrowRight':
-      ui_next_page();
+    case 's':
+      ui_show_stats();
+      break;
+    case 'e':
+      ui_goto_edit_page();
       break;
     }
+  }
+
+  let show_menu = $state(false);
+  let show_stats = $state(false);
+
+  function ui_show_menu() {
+    show_menu = true;
+  }
+
+  function ui_show_stats() {
+    // FIXME: convert stats to a dialog
+    ui_page = UiPage.MORE;
+    // show_stats = true;
+  }
+
+  function ui_close_dialogs(): boolean {
+    if (!show_menu && !show_stats)
+      return false;
+
+    show_menu = false;
+    show_stats = false;
+
+    return true;
   }
 
 </script>
@@ -291,7 +349,7 @@
 
   {:else if ui_page == UiPage.PLAY}
     <div class='grid-container'>
-      <div class='score-card' onclick={ui_next_page}>
+      <div class='score-card' onclick={ui_show_menu}>
 	<div>{ live_update(game.state.get_frame_time()) }</div>
 	<div>Frames ({game.state.num_frames})</div>
 	<div>
@@ -300,7 +358,7 @@
 	</div>
 	<div>Break</div>
 	<div></div>
-	<div class='card-button'>&bull;&bull;&bull;</div>
+	<div class='card-button'>Menu</div>
       </div>
       {#each game.state.get_players() as player (player.pid)}
 	<div class='score-card {ui_score_card_player_style(player)}' onclick={() => ui_click_player(player)} animate:flip='{{ duration: (d) => d * 2 }}'>
@@ -362,7 +420,7 @@
     </div>
   {:else if ui_page == UiPage.MORE}
     <div class='grid-container'>
-      <div class='score-card' onclick={ui_next_page}>
+      <div class='score-card' onclick={ui_goto_play_page}>
 	<div>{ live_update(game.state.get_frame_time()) }</div>
 	<div>Frames ({game.state.num_frames})</div>
 	<div>
@@ -371,7 +429,7 @@
 	</div>
 	<div>Break</div>
 	<div></div>
-	<div class='card-button'>Edit</div>
+	<div class='card-button'>Continue play</div>
       </div>
       {#each game.state.get_players() as player (player.pid)}
 	<div class='score-card {ui_score_card_player_style(player)}' onclick={() => ui_click_player_more(player)}>
@@ -421,7 +479,7 @@
     </div>
   {:else}
     <div class='grid-container'>
-      <div class='score-card' onclick={ui_next_page}>
+      <div class='score-card' onclick={ui_goto_play_page}>
 	<div>{ live_update(game.state.get_frame_time()) }</div>
 	<div>Frames ({game.state.num_frames})</div>
 	<div>
@@ -430,7 +488,7 @@
 	</div>
 	<div>Break</div>
 	<div></div>
-	<div class='card-button'>Continue</div>
+	<div class='card-button'>Continue play</div>
       </div>
       {#each game.state.get_players() as player (player.pid)}
 	<div class='score-card {ui_score_card_player_style(player)}'>
@@ -483,6 +541,28 @@
     </div>
 
   {/if}
+
+{#if ui_page != UiPage.START}
+  <Dialog bind:show={show_menu}>
+    <div class='dialog'>
+      <div class='menu'>
+	<div class='menu-column'>
+	  <div title='Shortcut: s' class='menu-button' onclick={ui_show_stats}>Statistics</div>
+	  <div title='Shortcut: e' class='menu-button' onclick={ui_goto_edit_page}>Edit</div>
+	  <div title='Shortcut: FIXME' class='menu-button unavailable'>N/A</div>
+	  <div title='Shortcut: FIXME' class='menu-button unavailable'>N/A</div>
+	</div>
+	<div class='menu-column'>
+	  <div class='menu-button' onclick={ui_toggle_fullscreen}>Full screen</div>
+	  <div class='menu-button unavailable'>N/A</div>
+	  <div class='menu-button unavailable'>N/A</div>
+	  <div class='menu-button unavailable'>N/A</div>
+	</div>
+      </div>
+    </div>
+  </Dialog>
+{/if}
+
 </main>
 
 <style>
@@ -494,6 +574,43 @@
     font-size: 2vw;
     text-align: center;
     text-transform: uppercase;
+  }
+
+  .menu {
+    display: grid;
+    grid-template-columns: 3fr 3fr;
+    grid-template-rows: auto auto;
+    color: white;
+  }
+
+  .menu > * {
+    background-color: #155843;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 2vmin;
+    border-width: 0.5vmin;
+  }
+
+  .menu-column {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 2vmin;
+  }
+
+  .menu-button {
+    background-image: linear-gradient(30deg, gray, white);
+    border-radius: inherit;
+    color: black;
+  }
+
+  .dialog {
+    background-color: #155843;
+    color: white;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 2vmin;
+    border-width: 0.5vmin;
   }
 
   .grid-container {
