@@ -453,18 +453,14 @@
 	</div>
       {/each}
 
-      <div class='info-card' onclick={ui_new_frame}>
+      <div class='info-card'>
 	<div>Frame shot time</div>
 	<div>Frame balls</div>
 	<div>Frame high</div>
 	<div>Time since last pot</div>
 	<div>Game balls</div>
 	<div>Game high</div>
-	{#if game.state.can_new_frame()}
-	  <div class='card-button'>New frame</div>
-	{:else}
-	  <div></div>
-	{/if}
+	<div></div>
       </div>
       {#each game.state.get_players() as player (player.pid)}
       <div class='info-card'>
@@ -550,7 +546,7 @@
 	  <div title='Shortcut: s' class='menu-button' onclick={ui_show_stats}>Statistics</div>
 	  <div title='Shortcut: e' class='menu-button' onclick={ui_goto_edit_page}>Edit</div>
 	  <div title='Shortcut: FIXME' class='menu-button unavailable'>N/A</div>
-	  <div title='Shortcut: FIXME' class='menu-button unavailable'>N/A</div>
+	  <div title='Shortcut: FIXME' class='menu-button {game.state.can_new_frame() ? "" : "unavailable"}' onclick={ui_new_frame}>New frame</div>
 	</div>
 	<div class='menu-column'>
 	  <div class='menu-button' onclick={ui_toggle_fullscreen}>Full screen</div>
