@@ -14,6 +14,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          tags: true
       - id: version-matrix
         run: echo "matrix=$(.github/config.py --tags --branches)" | tee $GITHUB_OUTPUT
       - id: latest
