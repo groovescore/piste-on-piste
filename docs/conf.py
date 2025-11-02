@@ -30,6 +30,6 @@ html_theme_options = {
     'description': 'Three-player snooker rules and a scoreboard app',
     'extra_nav_links': {
         'Scoreboard App': 'latest.html',
-        'GitHub Project': 'https://github.com/jnikula/piste-on-piste',
+        'GitHub Project': 'https://github.com/groovescore/piste-on-piste',
     }
 }

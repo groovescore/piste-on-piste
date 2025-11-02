@@ -24,7 +24,7 @@ There's a rudimentary :ref:`manual` for the app, covering the basics.
 If you have any issues, questions or comments about the rules or the scoreboard
 app, please see the `Piste on Piste GitHub project page`_.
 
-.. _Piste on Piste GitHub project page: https://github.com/jnikula/piste-on-piste
+.. _Piste on Piste GitHub project page: https://github.com/groovescore/piste-on-piste
 
 .. _Piste on Piste scoreboard app: latest.html
 
