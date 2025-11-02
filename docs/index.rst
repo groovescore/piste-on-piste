@@ -21,6 +21,15 @@ There's a rudimentary :ref:`manual` for the app, covering the basics.
    game using one version of the app, please finish it using the same
    version. The app version is visible in the URL.
 
+License
+-------
+
+Piste on Piste is free software, released under the `GNU Affero General Public
+License v3.0 or later`_ (AGPL-3.0-or-later).
+
+Contact
+-------
+
 If you have any issues, questions or comments about the rules or the scoreboard
 app, please see the `Piste on Piste GitHub project page`_.
 
