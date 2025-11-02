@@ -23,6 +23,13 @@ app built from current main branch.
 
 .. _development version: https://pop.groovescore.app/main
 
+Regular Two-Player Snooker
+--------------------------
+
+Looking for a regular two-player version? See Groovescore_.
+
+.. _Groovescore: https://github.com/groovescore/snooker-scoreboard
+
 License
 -------
 

@@ -21,6 +21,13 @@ There's a rudimentary :ref:`manual` for the app, covering the basics.
    game using one version of the app, please finish it using the same
    version. The app version is visible in the URL.
 
+Regular Two-Player Snooker
+--------------------------
+
+Looking for a regular two-player version? See Groovescore_.
+
+.. _Groovescore: https://groovescore.app
+
 License
 -------
 
