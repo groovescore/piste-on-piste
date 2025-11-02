@@ -252,7 +252,7 @@
       {/each}
 
       <div class='info-card {options.can_new_game() ? "" : "unavailable"}' onclick={ui_new_game}>
-	<div class='info-card-copyright' onclick={(e) => e.stopPropagation()}><a href="https://jnikula.github.io/piste-on-piste/">&copy; 2022-2025 Jani Nikula<br>License: AGPL 3.0 or later &#x1f517;</a></div>
+	<div class='info-card-copyright' onclick={(e) => e.stopPropagation()}><a href="https://pop.groovescore.app/">&copy; 2022-2025 Jani Nikula<br>License: AGPL 3.0 or later &#x1f517;</a></div>
 	<div></div>
 	<div>Piste on piste</div>
 	<div></div>

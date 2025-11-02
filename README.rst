@@ -15,13 +15,13 @@ app built from current main branch.
 
 .. _Svelte: https://svelte.dev/
 
-.. _documentation: https://jnikula.github.io/piste-on-piste/
+.. _documentation: https://pop.groovescore.app/
 
-.. _rules: https://jnikula.github.io/piste-on-piste/three-player-snooker-rules.html
+.. _rules: https://pop.groovescore.app/three-player-snooker-rules.html
 
-.. _scoreboard app: https://jnikula.github.io/piste-on-piste/latest.html
+.. _scoreboard app: https://pop.groovescore.app/latest.html
 
-.. _development version: https://jnikula.github.io/piste-on-piste/main
+.. _development version: https://pop.groovescore.app/main
 
 License
 -------
