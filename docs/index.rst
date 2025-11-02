@@ -44,6 +44,8 @@ app, please see the `Piste on Piste GitHub project page`_.
 
 .. _Piste on Piste scoreboard app: latest.html
 
+.. _GNU Affero General Public License v3.0 or later: https://spdx.org/licenses/AGPL-3.0-or-later.html
+
 .. toctree::
    :maxdepth: 1
    :hidden:
