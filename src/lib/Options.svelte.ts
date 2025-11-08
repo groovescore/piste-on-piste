@@ -21,11 +21,19 @@ export class Options {
   num_reds: number = $derived(modes[this.mode]);
   num_frames: number = $state(-1);
 
-  randomize: number = $state(1);
+  private readonly RANDOM_FIRST_TO_BREAK: number;
+  first_to_break: number = $state(0);
 
   constructor(saveprefix: string, num_players: number) {
     this._savename = `${saveprefix}-names`;
     this._num_players = num_players;
+
+    if (num_players == 2)
+      this.RANDOM_FIRST_TO_BREAK = num_players; // 0, 1, or random
+    else
+      this.RANDOM_FIRST_TO_BREAK = 1; // current or random order
+    this.first_to_break = this.RANDOM_FIRST_TO_BREAK;
+
     this.reload();
   }
 
@@ -63,6 +71,10 @@ export class Options {
 
   save(): void {
     localStorage.setItem(this._savename, JSON.stringify(this.names));
+  }
+
+  get randomize(): boolean {
+    return this.first_to_break == this.RANDOM_FIRST_TO_BREAK;
   }
 
   valid_name(sn: SavedName): boolean {

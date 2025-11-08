@@ -308,8 +308,12 @@
 	<div></div>
 	<div></div>
 	<div></div>
-	<div>Random order</div>
-	<div><input type="range" bind:value={options.randomize} min="0" max="1"></div>
+	{#if options.randomize}
+	  <div>Random order</div>
+	{:else}
+	  <div>This order</div>
+	{/if}
+	<div><input type="range" bind:value={options.first_to_break} min="0" max="1"></div>
       </div>
       {#each options.names as player_name (player_name.id)}
 	<div class='name-input-card {ui_name_input_card_style(player_name)}' animate:flip='{{ duration: (d) => d * 2 }}'>
