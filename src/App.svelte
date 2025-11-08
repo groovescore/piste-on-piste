@@ -12,6 +12,7 @@
   import { SaveGame } from './lib/SaveGame.svelte';
   import type { Player } from './lib/Player.ts';
   import type { SaveGameId } from './lib/SaveGame.svelte';
+  import type { SavedName } from './lib/Options.svelte.ts';
   import { version } from '../package.json';
 
   const saveprefix: string = 'piste-on-piste';
@@ -134,8 +135,13 @@
       return '';
   }
 
-  function ui_name_input_card_style(name: string): string {
-    return options.valid_name(name) ? '' : 'retake'; // FIXME
+  function ui_name_input_card_style(sn: SavedName): string {
+    let invalid: string = '';
+
+    if (!options.valid_name(sn))
+      invalid = 'retake'; // FIXME
+
+    return `${invalid}`;
   }
 
   // UI key events
@@ -306,7 +312,7 @@
 	<div><input type="range" bind:value={options.randomize} min="0" max="1"></div>
       </div>
       {#each options.names as player_name (player_name.id)}
-	<div class='name-input-card {ui_name_input_card_style(player_name.name)}' animate:flip='{{ duration: (d) => d * 2 }}'>
+	<div class='name-input-card {ui_name_input_card_style(player_name)}' animate:flip='{{ duration: (d) => d * 2 }}'>
 	  <input class='name-input' size=9 minlength=1 maxlength=10 placeholder='enter name' bind:value='{player_name.name}'/>
 	</div>
       {/each}
