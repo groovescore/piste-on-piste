@@ -12,6 +12,7 @@ const modes: number[] = [6, 10, 15];
 export class Options {
   names: SavedName[] = $state([]);
   private _savename: string;
+  private _num_players: number;
 
   readonly mode_min: number = 0;
   readonly mode_max: number = modes.length - 1;
@@ -22,8 +23,9 @@ export class Options {
 
   randomize: number = $state(1);
 
-  constructor(saveprefix: string) {
+  constructor(saveprefix: string, num_players: number) {
     this._savename = `${saveprefix}-names`;
+    this._num_players = num_players;
     this.reload();
   }
 
@@ -34,7 +36,7 @@ export class Options {
       this.names = names;
     } else {
       names = [];
-      for (let i of [0, 1, 2])
+      for (let i = 0; i < this._num_players; i++)
 	names.push({ id: i, name: `Player ${i + 1}`});
 
       this.names = names;
@@ -50,7 +52,7 @@ export class Options {
     try {
       let names = JSON.parse(names_json);
 
-      if (!Array.isArray(names) || names.length != 3)
+      if (!Array.isArray(names) || names.length != this._num_players)
 	return null;
 
       return names;

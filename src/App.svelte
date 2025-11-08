@@ -17,7 +17,7 @@
 
   const saveprefix: string = 'piste-on-piste';
 
-  const options: Options = $state(new Options(saveprefix));
+  const options: Options = $state(new Options(saveprefix, 3));
 
   const savegame: SaveGame = $state(new SaveGame());
 
