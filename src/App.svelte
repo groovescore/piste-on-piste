@@ -138,7 +138,7 @@
     let invalid: string = '';
 
     if (!options.valid_name(sn))
-      invalid = 'retake'; // FIXME
+      invalid = 'invalid';
 
     return `${invalid}`;
   }
@@ -732,6 +732,10 @@
     border-radius: 2vmin;
     border-width: 0.5vmin;
     align-items: center;
+  }
+
+  .invalid {
+    border-color: red;
   }
 
   .highlight {
