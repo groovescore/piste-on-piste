@@ -98,15 +98,15 @@ export class Game {
     this.save();
   }
 
-  concede(pid: number): void {
+  concede(): void {
     this._push();
-    this.state.concede(pid);
+    this.state.concede();
     this.save();
   }
 
-  declare_winner(pid: number): void {
+  declare_winner(): void {
     this._push();
-    this.state.declare_winner(pid);
+    this.state.declare_winner();
     this.save();
   }
 

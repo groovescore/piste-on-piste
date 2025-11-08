@@ -98,9 +98,9 @@
   function ui_click_player_more(player: Player): void {
     // FIXME: don't duplicate the conditions here and in html
     if (game.state.can_concede(player.pid))
-      game.concede(player.pid);
+      game.concede();
     else if (game.state.can_declare_winner(player.pid))
-      game.declare_winner(player.pid);
+      game.declare_winner();
   }
 
   function ui_player_edit_points(pid: number, amount: number): void {

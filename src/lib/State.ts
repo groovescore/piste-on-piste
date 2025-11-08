@@ -191,7 +191,7 @@ export class State {
     // players still in the game
     const players: Player[] = this.players.filter((p) => !p.loser && !p.winner).sort((p1, p2) => p1.compare(p2));
 
-    // only the last player can concede
+    // only the last remaining player can concede
     if (players[0].points != p.points)
       return false;
 
@@ -202,9 +202,13 @@ export class State {
     return true;
   }
 
-  concede(pid: number): void {
-    let p = this._get_player_by_pid(pid);
-    p.loser = true;
+  concede(): void {
+    const players: Player[] = this._sorted_players()
+
+    if (players[0].loser)
+      players[2].winner = true
+    else
+      players[0].loser = true
   }
 
   can_declare_winner(pid: number): boolean {
@@ -235,9 +239,14 @@ export class State {
     return true;
   }
 
-  declare_winner(pid: number): void {
-    let p: Player = this._get_player_by_pid(pid);
-    p.winner = true;
+  declare_winner(): void {
+    // players still in the game
+    const players: Player[] = this._sorted_players()
+
+    if (players[2].winner)
+      players[0].loser = true
+    else
+      players[2].winner = true;
   }
 
   is_current_player(pid: number): boolean {
