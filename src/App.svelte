@@ -21,7 +21,7 @@
 
   const savegame: SaveGame = $state(new SaveGame(saveprefix));
 
-  const game = $state(new Game());
+  const game: Game = $state(new Game());
 
   const fullscreen: Fullscreen = new Fullscreen(document.documentElement, saveprefix);
 
