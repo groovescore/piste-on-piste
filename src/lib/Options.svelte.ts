@@ -8,10 +8,17 @@ export type SavedName = {
 
 export class Options {
   names: SavedName[] = $state([]);
+  private _savename: string;
+
   num_reds: number = $state();
   randomize: number = $state(1);
 
-  constructor() {
+  constructor(saveprefix: string) {
+    this._savename = `${saveprefix}-names`;
+    this.reload();
+  }
+
+  reload(): void {
     let names: SavedName[] = this._load();
 
     if (!names) {
@@ -26,7 +33,7 @@ export class Options {
 
   // load names from local storage
   private _load(): SavedName[] {
-    let names_json = localStorage.getItem('piste-on-piste-names');
+    let names_json = localStorage.getItem(this._savename);
     if (!names_json)
       return null;
 
@@ -43,7 +50,7 @@ export class Options {
   }
 
   save(): void {
-    localStorage.setItem('piste-on-piste-names', JSON.stringify(this.names));
+    localStorage.setItem(this._savename, JSON.stringify(this.names));
   }
 
   valid_name(name: string): boolean {

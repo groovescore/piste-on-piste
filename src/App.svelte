@@ -14,13 +14,15 @@
   import type { SaveGameId } from './lib/SaveGame.svelte';
   import { version } from '../package.json';
 
-  const options: Options = $state(new Options());
+  const saveprefix: string = 'piste-on-piste';
+
+  const options: Options = $state(new Options(saveprefix));
 
   const savegame: SaveGame = $state(new SaveGame());
 
   const game = $state(new Game());
 
-  const fullscreen: Fullscreen = new Fullscreen(document.documentElement, 'piste-on-piste');
+  const fullscreen: Fullscreen = new Fullscreen(document.documentElement, saveprefix);
 
   function ui_toggle_fullscreen() {
     fullscreen.toggle();
