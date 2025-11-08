@@ -44,8 +44,7 @@
   const UiPage = {
     START: 0,
     PLAY: 1,
-    MORE: 2,
-    EDIT: 3,
+    EDIT: 2,
   };
 
   let ui_page = $state(UiPage.START);
@@ -197,19 +196,6 @@
       }
     }
 
-    // FIXME: convert stats to a dialog
-    if (ui_page == UiPage.MORE) {
-      switch (event.key) {
-	// keys specific to stats page
-      case 'Escape':
-	ui_goto_play_page();
-	return;
-	// the rest are ignored
-      default:
-	return;
-      }
-    }
-
     switch (event.key) {
     case '1':
     case '2':
@@ -288,11 +274,6 @@
 
   function ui_show_stats() {
     show_stats = true;
-  }
-
-  // FIXME: remove MORE page after its menu actions have been removed
-  function ui_show_stats_page() {
-    ui_page = UiPage.MORE;
   }
 
   function ui_close_dialogs(): boolean {
@@ -441,55 +422,6 @@
 	{/each}
       </div>
     </div>
-  {:else if ui_page == UiPage.MORE}
-    <div class='grid-container'>
-      <div class='score-card' onclick={ui_goto_play_page}>
-	<div>{ live_update(game.state.get_frame_time()) }</div>
-	<div>Frames ({game.state.num_frames})</div>
-	<div>
-	  Points
-	  <div>(Remaining {game.state.num_points()})</div>
-	</div>
-	<div>Break</div>
-	<div></div>
-	<div class='card-button'>Continue play</div>
-      </div>
-      {#each game.state.get_players() as player (player.pid)}
-	<div class='score-card {ui_score_card_player_style(player)}' onclick={() => ui_click_player_more(player)}>
-	  <div>{player.name}</div>
-	  <div>{player.frame_1st} - {player.frame_2nd} - {player.frame_3rd}</div>
-	  <div class='score-card-points'>{player.points}</div>
-	  {#if game.state.is_current_player(player.pid)}
-	    <div>{player.cur_break}</div>
-	    <div class='score-card-break'><Break balls={player._cur_break}></Break></div>
-	  {:else}
-	    <div>({player.last_break})</div>
-	    <div class='score-card-break unavailable'><Break balls={player._last_break}></Break></div>
-	  {/if}
-	  <div></div>
-	</div>
-      {/each}
-
-      <div class='info-card'>
-	<div>Frame shot time</div>
-	<div>Frame balls</div>
-	<div>Frame high</div>
-	<div>Time since last pot</div>
-	<div>Game balls</div>
-	<div>Game high</div>
-	<div></div>
-      </div>
-      {#each game.state.get_players() as player (player.pid)}
-      <div class='info-card'>
-	<div>{ player.frame_shot_time }</div>
-	<div>{ player.frame_balls }</div>
-	<div>{ player.frame_high_break }</div>
-	<div>{ live_update(player.time_since_last_pot) }</div>
-	<div>{ player.game_balls }</div>
-	<div>{ player.game_high_break }</div>
-      </div>
-      {/each}
-    </div>
   {:else}
     <div class='grid-container'>
       <div class='score-card' onclick={ui_goto_play_page}>
@@ -565,7 +497,7 @@
     <div class='dialog'>
       <div class='menu'>
 	<div class='menu-column'>
-	  <div title='Shortcut: s' class='menu-button' onclick={ui_show_stats_page}>Statistics</div>
+	  <div title='Shortcut: s' class='menu-button' onclick={ui_show_stats}>Statistics</div>
 	  <div title='Shortcut: e' class='menu-button' onclick={ui_goto_edit_page}>Edit</div>
 	  <div title='Shortcut: l' class='menu-button {game.state.can_concede() ? "" : "unavailable"}' onclick={ui_concede}>Concede</div>
 	  <div title='Shortcut: FIXME' class='menu-button {game.state.can_new_frame() ? "" : "unavailable"}' onclick={ui_new_frame}>New frame</div>
