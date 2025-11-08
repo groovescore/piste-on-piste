@@ -6,11 +6,20 @@ export type SavedName = {
   name: string;
 };
 
+// How many red balls to start with? Only three options, not arbitrary.
+const modes: number[] = [6, 10, 15];
+
 export class Options {
   names: SavedName[] = $state([]);
   private _savename: string;
 
-  num_reds: number = $state();
+  readonly mode_min: number = 0;
+  readonly mode_max: number = modes.length - 1;
+  mode: number = $state(this.mode_max);
+
+  num_reds: number = $derived(modes[this.mode]);
+  num_frames: number = $state(-1);
+
   randomize: number = $state(1);
 
   constructor(saveprefix: string) {
@@ -21,14 +30,15 @@ export class Options {
   reload(): void {
     let names: SavedName[] = this._load();
 
-    if (!names) {
+    if (names) {
+      this.names = names;
+    } else {
       names = [];
-      for (let i of [1,2,3])
-	names.push({ id: i, name: `Player ${i}`});
-    }
+      for (let i of [0, 1, 2])
+	names.push({ id: i, name: `Player ${i + 1}`});
 
-    this.names.splice(0, 3, ...names);
-    this.num_reds = 15;
+      this.names = names;
+    }
   }
 
   // load names from local storage
