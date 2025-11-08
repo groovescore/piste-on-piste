@@ -117,16 +117,9 @@
   }
 
   function ui_score_card_player_style(player: Player): string {
-    if (game.state._is_frame_over()) {
-      if (player.winner)
-	return 'first-place';
-      else if (player.loser)
-	return 'third-place';
-      else
-	return 'second-place';
-    }
-
-    if (game.state.is_current_player(player.pid))
+    if (game.state._is_frame_over())
+      return '';
+    else if (game.state.is_current_player(player.pid))
       return game.state.retake ? 'retake' : 'active';
     else if (player.winner || player.loser)
       return 'unavailable';
@@ -380,6 +373,10 @@
 	    <div class='card-button'>End Turn</div>
 	  {:else if game.state.can_foul_retake() && game.state.is_previous_player(player.pid)}
 	    <div class='card-button'>Play Again</div>
+	  {:else if player.winner}
+	    <div class='highlight'>Frame Winner</div>
+	  {:else if player.loser}
+	    <div class='highlight'>Frame Loser</div>
 	  {:else}
 	    <div></div>
 	  {/if}
@@ -730,20 +727,13 @@
     align-items: center;
   }
 
+  .highlight {
+    font-weight: bold;
+    color: orange;
+  }
+
   .unavailable {
     filter: brightness(50%);
     -webkit-filter: brightness(50%); /* https://caniuse.com/css-filters */
-  }
-
-  .first-place {
-    border-color: gold;
-  }
-
-  .second-place {
-    border-color: silver;
-  }
-
-  .third-place {
-    border-color: #CD7F32;
   }
 </style>
