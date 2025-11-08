@@ -11,12 +11,15 @@ export type SaveGameId = {
 
 export class SaveGame {
   saved_games: SaveGameId[] = $state();
+  private static _savename: string;
 
-  constructor() {
-    this.saved_games = this._read_saved_games();
+  // Note: saveprefix is stored in a static class variable!
+  constructor(saveprefix: string) {
+    SaveGame._savename = `${saveprefix}-save`;
+    this.reload();
   }
 
-  _read_saved_games(): SaveGameId[] {
+  private _read_saved_games(): SaveGameId[] {
     let saved: SaveGameId[] = [];
 
     for (let slot of [0,1,2]) {
@@ -39,13 +42,17 @@ export class SaveGame {
     return saved;
   }
 
+  reload(): void {
+    this.saved_games = this._read_saved_games();
+  }
+
   new_game_slot(): number {
     // save new game in the oldest slot
     return this.saved_games[this.saved_games.length - 1].slot;
   }
 
   private static save_game_name(slot: number): string {
-    return `piste-on-piste-save-${slot}`;
+    return `${SaveGame._savename}-${slot}`;
   }
 
   static save(undo_stack: State[], slot: number): void {
@@ -66,4 +73,4 @@ export class SaveGame {
 
     return undo_stack;
   }
-};
+}

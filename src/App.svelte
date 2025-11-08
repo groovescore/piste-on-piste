@@ -19,7 +19,7 @@
 
   const options: Options = $state(new Options(saveprefix, 3));
 
-  const savegame: SaveGame = $state(new SaveGame());
+  const savegame: SaveGame = $state(new SaveGame(saveprefix));
 
   const game = $state(new Game());
 
