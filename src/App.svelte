@@ -396,7 +396,8 @@
       <div class='button-bar'>
 	<div class='label'>Pot</div>
 	{#each [1,2,3,4,5,6,7] as value}
-	  <Ball value={value}
+	  <Ball title='Shortcut: {value}'
+	        value={value}
 		active={game.state.can_pot_ball(value)}
 		action={() => game.pot_ball(value)}>
 	    {value}
@@ -406,12 +407,14 @@
 
       <div class='button-bar'>
 	<div class='label'>Undo</div>
-	<Ball value={0}
+	<Ball title='Shortcut: z'
+	      value={0}
 	      active={game.can_undo}
 	      action={() => game.undo()}>
 	  &#x21b6;
 	</Ball>
-	<Ball value={0}
+	<Ball title='Shortcut: y'
+	      value={0}
 	      active={game.can_redo}
 	      action={() => game.redo()}>
 	  &#x21b7;
@@ -419,7 +422,8 @@
 
 	<div class='label'>Foul</div>
 	{#each [4,5,6,7] as value}
-	  <Ball value={0}
+	  <Ball title='Shortcut: f followed by {value}'
+		value={0}
 		active={game.state.can_commit_foul(value)}
 		action={() => game.commit_foul(value)}>
 	    {value}
@@ -438,7 +442,7 @@
 	</div>
 	<div>Break</div>
 	<div></div>
-	<div class='card-button'>Continue play</div>
+	<div title='Shortcut: [ESC]' class='card-button'>Continue play</div>
       </div>
       {#each game.state.get_players() as player (player.pid)}
 	<div class='score-card {ui_score_card_player_style(player)}'>
@@ -453,11 +457,12 @@
 	    <div class='score-card-break unavailable'><Break balls={player._last_break}></Break></div>
 	  {/if}
 	  <div class='double-button'>
-	    <div class='card-button' onclick={() => ui_player_edit_points(player.pid, -1)}>-</div>
+	    <div class='card-button' onclick={() => ui_player_edit_points(player.pid, -1)}>&ndash;</div>
 	    <div class='card-button' onclick={() => ui_player_edit_points(player.pid, 1)}>+</div>
 	  </div>
 	</div>
       {/each}
+
       <div class='button-bar'>
 	<div class='label'>Ball count</div>
 	{#each [1,2,3,4,5,6,7] as value}
@@ -469,12 +474,14 @@
       </div>
       <div class='button-bar'>
 	<div class='label'>Undo</div>
-	<Ball value={0}
+	<Ball title='Shortcut: z'
+	      value={0}
 	      active={game.can_undo}
 	      action={() => game.undo()}>
 	  &#x21b6;
 	</Ball>
-	<Ball value={0}
+	<Ball title='Shortcut: y'
+	      value={0}
 	      active={game.can_redo}
 	      action={() => game.redo()}>
 	  &#x21b7;
@@ -482,12 +489,14 @@
 	<div class='label'></div>
 	<div class='label'></div>
 	<div class='label'>Adjust ball count</div>
-	<Ball value={0}
+	<Ball title='Shortcut: -'
+	      value={0}
 	      active={game.state.can_minus_balls()}
 	      action={() => game.minus_balls()}>
-	  -
+	  &ndash;
 	</Ball>
-	<Ball value={0}
+	<Ball title='Shortcut: +'
+	      value={0}
 	      active={game.state.can_plus_balls()}
 	      action={() => game.plus_balls()}>
 	  +
