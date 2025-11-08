@@ -95,12 +95,12 @@
       game.foul_retake();
   }
 
-  function ui_click_player_more(player: Player): void {
-    // FIXME: don't duplicate the conditions here and in html
-    if (game.state.can_concede())
-      game.concede();
-    else if (game.state.can_declare_winner())
-      game.declare_winner();
+  function ui_concede(): void {
+    game.concede();
+  }
+
+  function ui_declare_winner(): void {
+    game.declare_winner();
   }
 
   function ui_player_edit_points(pid: number, amount: number): void {
@@ -255,6 +255,14 @@
       if (game.state.can_minus_balls())
 	game.minus_balls();
       break;
+    case 'l':
+      if (game.state.can_concede())
+	game.concede();
+      break
+    case 'w':
+      if (game.state.can_declare_winner())
+	game.declare_winner();
+      break
     case 'n':
       if (game.state.can_new_frame())
 	game.new_frame();
@@ -458,13 +466,7 @@
 	    <div>({player.last_break})</div>
 	    <div class='score-card-break unavailable'><Break balls={player._last_break}></Break></div>
 	  {/if}
-	  {#if game.state.can_concede()}
-	    <div class='card-button'>Concede</div>
-	  {:else if game.state.can_declare_winner()}
-	    <div class='card-button'>Set Winner</div>
-	  {:else}
-	    <div></div>
-	  {/if}
+	  <div></div>
 	</div>
       {/each}
 
@@ -565,13 +567,13 @@
 	<div class='menu-column'>
 	  <div title='Shortcut: s' class='menu-button' onclick={ui_show_stats_page}>Statistics</div>
 	  <div title='Shortcut: e' class='menu-button' onclick={ui_goto_edit_page}>Edit</div>
-	  <div title='Shortcut: FIXME' class='menu-button unavailable'>N/A</div>
+	  <div title='Shortcut: l' class='menu-button {game.state.can_concede() ? "" : "unavailable"}' onclick={ui_concede}>Concede</div>
 	  <div title='Shortcut: FIXME' class='menu-button {game.state.can_new_frame() ? "" : "unavailable"}' onclick={ui_new_frame}>New frame</div>
 	</div>
 	<div class='menu-column'>
 	  <div class='menu-button' onclick={ui_toggle_fullscreen}>Full screen</div>
 	  <div class='menu-button unavailable'>N/A</div>
-	  <div class='menu-button unavailable'>N/A</div>
+	  <div title='Shortcut: w' class='menu-button {game.state.can_declare_winner() ? "" : "unavailable"}' onclick={ui_declare_winner}>Declare Winner</div>
 	  <div class='menu-button unavailable'>N/A</div>
 	</div>
       </div>
