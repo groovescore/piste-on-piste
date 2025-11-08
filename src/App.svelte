@@ -20,7 +20,7 @@
 
   const game = $state(new Game());
 
-  const fullscreen: Fullscreen = new Fullscreen(document.documentElement);
+  const fullscreen: Fullscreen = new Fullscreen(document.documentElement, 'piste-on-piste');
 
   function ui_toggle_fullscreen() {
     fullscreen.toggle();
