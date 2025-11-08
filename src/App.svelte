@@ -77,6 +77,13 @@
     ui_page = UiPage.PLAY;
   }
 
+  function ui_goto_start_page(): void {
+    options.reload();
+    savegame.reload();
+
+    ui_page = UiPage.START;
+  }
+
   function ui_goto_play_page(): void {
     ui_page = UiPage.PLAY;
   }
@@ -501,7 +508,7 @@
 	</div>
 	<div class='menu-column'>
 	  <div class='menu-button' onclick={ui_toggle_fullscreen}>Full screen</div>
-	  <div class='menu-button unavailable'>N/A</div>
+	  <div class='menu-button' onclick={ui_goto_start_page}>Main screen</div>
 	  <div title='Shortcut: w' class='menu-button {game.state.can_declare_winner() ? "" : "unavailable"}' onclick={ui_declare_winner}>Declare Winner</div>
 	  <div class='menu-button unavailable'>N/A</div>
 	</div>
