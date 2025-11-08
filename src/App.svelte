@@ -97,9 +97,9 @@
 
   function ui_click_player_more(player: Player): void {
     // FIXME: don't duplicate the conditions here and in html
-    if (game.state.can_concede(player.pid))
+    if (game.state.can_concede())
       game.concede();
-    else if (game.state.can_declare_winner(player.pid))
+    else if (game.state.can_declare_winner())
       game.declare_winner();
   }
 
@@ -458,9 +458,9 @@
 	    <div>({player.last_break})</div>
 	    <div class='score-card-break unavailable'><Break balls={player._last_break}></Break></div>
 	  {/if}
-	  {#if game.state.can_concede(player.pid)}
+	  {#if game.state.can_concede()}
 	    <div class='card-button'>Concede</div>
-	  {:else if game.state.can_declare_winner(player.pid)}
+	  {:else if game.state.can_declare_winner()}
 	    <div class='card-button'>Set Winner</div>
 	  {:else}
 	    <div></div>

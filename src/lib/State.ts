@@ -178,21 +178,15 @@ export class State {
 
   // All the actions
 
-  can_concede(pid: number): boolean {
+  can_concede(): boolean {
     if (this._is_frame_over())
-      return false;
-
-    let p: Player = this._get_player_by_pid(pid);
-
-    // current player can't concede
-    if (this.is_current_player(pid))
       return false;
 
     // players still in the game
     const players: Player[] = this.players.filter((p) => !p.loser && !p.winner).sort((p1, p2) => p1.compare(p2));
 
-    // only the last remaining player can concede
-    if (players[0].points != p.points)
+    // current player can't concede
+    if (this.is_current_player(players[0].pid))
       return false;
 
     // the last player can concede only if snookers required
@@ -211,14 +205,8 @@ export class State {
       players[0].loser = true
   }
 
-  can_declare_winner(pid: number): boolean {
+  can_declare_winner(): boolean {
     if (this._is_frame_over())
-      return false;
-
-    let p: Player = this._get_player_by_pid(pid);
-
-    // current player can't be declared winner
-    if (this.is_current_player(pid))
       return false;
 
     // players still in the game
@@ -228,8 +216,8 @@ export class State {
     if (players.length != 3)
       return false;
 
-    // only the first player can be declared winner
-    if (players[2].points != p.points)
+    // current player can't be declared winner
+    if (this.is_current_player(players[2].pid))
       return false;
 
     // the first player can be declared winner only if snookers required
