@@ -203,6 +203,9 @@ export class State {
       players[2].winner = true
     else
       players[0].loser = true
+
+    if (this._is_frame_over())
+      this._end_turn()
   }
 
   can_declare_winner(): boolean {
@@ -235,6 +238,9 @@ export class State {
       players[0].loser = true
     else
       players[2].winner = true;
+
+   if (this._is_frame_over())
+      this._end_turn()
   }
 
   is_current_player(pid: number): boolean {
