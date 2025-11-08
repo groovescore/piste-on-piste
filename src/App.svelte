@@ -361,7 +361,11 @@
 	  <div>(Remaining {game.state.num_points()})</div>
 	</div>
 	<div>Break</div>
-	<div></div>
+	{#if game.state.respot_black}
+	  <div class='highlight'>re-spot black</div>
+	{:else}
+	  <div></div>
+	{/if}
 	<div class='card-button'>Menu</div>
       </div>
       {#each game.state.get_players() as player (player.pid)}
@@ -396,9 +400,6 @@
 		active={game.state.can_pot_ball(value)}
 		action={() => game.pot_ball(value)}>
 	    {value}
-	    {#if value === 7 && game.state.respot_black}
-	      <div class='respot'>re-spot!</div>
-	    {/if}
 	  </Ball>
 	{/each}
       </div>
@@ -723,15 +724,6 @@
 
   .retake {
     border-color: red;
-  }
-
-  .respot {
-    background-image: linear-gradient(30deg, gray, white);
-    border-style: solid;
-    border-color: red;
-    border-radius: 2vmin;
-    border-width: 0.5vmin;
-    align-items: center;
   }
 
   .invalid {
