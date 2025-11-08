@@ -279,9 +279,12 @@
   }
 
   function ui_show_stats() {
-    // FIXME: convert stats to a dialog
+    show_stats = true;
+  }
+
+  // FIXME: remove MORE page after its menu actions have been removed
+  function ui_show_stats_page() {
     ui_page = UiPage.MORE;
-    // show_stats = true;
   }
 
   function ui_close_dialogs(): boolean {
@@ -560,7 +563,7 @@
     <div class='dialog'>
       <div class='menu'>
 	<div class='menu-column'>
-	  <div title='Shortcut: s' class='menu-button' onclick={ui_show_stats}>Statistics</div>
+	  <div title='Shortcut: s' class='menu-button' onclick={ui_show_stats_page}>Statistics</div>
 	  <div title='Shortcut: e' class='menu-button' onclick={ui_goto_edit_page}>Edit</div>
 	  <div title='Shortcut: FIXME' class='menu-button unavailable'>N/A</div>
 	  <div title='Shortcut: FIXME' class='menu-button {game.state.can_new_frame() ? "" : "unavailable"}' onclick={ui_new_frame}>New frame</div>
@@ -571,6 +574,47 @@
 	  <div class='menu-button unavailable'>N/A</div>
 	  <div class='menu-button unavailable'>N/A</div>
 	</div>
+      </div>
+    </div>
+  </Dialog>
+
+  <Dialog bind:show={show_stats}>
+    <div class='dialog'>
+      <div class='stats'>
+	<div class='stats-column'>
+	  <div class='stats-heading'>Player</div>
+	  <div>&nbsp;</div>
+	  <div class='stats-heading'>Game statistics</div>
+
+	  <div>Frames ({game.state.num_frames})</div>
+	  <div>Highest break</div>
+	  <div>Balls potted</div>
+	  <div>Time since last pot</div>
+	  <div>&nbsp;</div>
+
+	  <div class='stats-heading'>Frame statistics</div>
+	  <div>Highest break</div>
+	  <div>Balls potted</div>
+	  <div>Average shot time</div>
+	</div>
+	{#each game.state.get_players() as player (player.pid)}
+	  <div class='stats-column'>
+	    <div class='stats-name'>{player.name}</div>
+	    <div>&nbsp;</div>
+	    <div>&nbsp;</div>
+
+	    <div>{player.frame_1st} - {player.frame_2nd} - {player.frame_3rd}</div>
+	    <div>{player.game_high_break}</div>
+	    <div>{player.game_balls}</div>
+	    <div>{live_update(player.time_since_last_pot)}</div>
+	    <div>&nbsp;</div>
+
+	    <div>&nbsp;</div>
+	    <div>{player.frame_high_break}</div>
+	    <div>{player.frame_balls}</div>
+	    <div>{player.frame_shot_time}</div>
+	  </div>
+	{/each}
       </div>
     </div>
   </Dialog>
@@ -624,6 +668,27 @@
     border-color: transparent;
     border-radius: 2vmin;
     border-width: 0.5vmin;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto auto auto;
+    text-transform: none;
+  }
+
+  .stats-column {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(12, 1fr);
+  }
+
+  .stats-name {
+    text-transform: uppercase;
+  }
+
+  .stats-heading {
+    font-weight: bold;
   }
 
   .grid-container {
