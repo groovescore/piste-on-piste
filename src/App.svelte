@@ -204,6 +204,7 @@
     case '5':
     case '6':
     case '7':
+    case '8':
       let value: number = parseInt(event.key);
 
       if (value >= 1 && value <= 7) {
@@ -216,6 +217,9 @@
 	  if (game.state.can_pot_ball(value))
 	    game.pot_ball(value);
 	}
+      } else if (value == 8) {
+	if (game.state.can_pot_free_ball())
+	  game.pot_free_ball();
       }
       break;
     case ' ':
@@ -520,7 +524,11 @@
 	  <div class='menu-button' onclick={ui_toggle_fullscreen}>Full screen</div>
 	  <div class='menu-button' onclick={ui_goto_start_page}>Main screen</div>
 	  <div title='Shortcut: w' class='menu-button {game.state.can_declare_winner() ? "" : "unavailable"}' onclick={ui_declare_winner}>Declare Winner</div>
-	  <div class='menu-button unavailable'>N/A</div>
+	  {#if game.state.can_pot_free_ball()}
+	    <div title='Shortcut: 8' class='menu-button' onclick={() => game.pot_free_ball()}>Pot free ball {game.state.free_ball_value()}</div>
+	  {:else}
+	    <div class='menu-button unavailable'>Pot free ball 0</div>
+	  {/if}
 	</div>
       </div>
     </div>
